@@ -8,7 +8,7 @@ import {
   Link,
   Text,
 } from "@chakra-ui/react";
-import { RiGoogleFill } from "@remixicon/react";
+import { RiCursorFill, RiCursorLine, RiGoogleFill } from "@remixicon/react";
 import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
@@ -42,8 +42,24 @@ const LandingPage = () => {
       });
     });
 
-    // animateHeroText();
-    // animateHeroImage();
+    const mouseClickAnimationTl = gsap.timeline({ repeat: -1, yoyo: true });
+
+    const animateMouseClick = contextSafe(() => {
+      mouseClickAnimationTl.to(".mouseClickAnimation", {
+        top: "25",
+        right: "40%",
+        opacity: 1,
+        duration: 1,
+      });
+
+      mouseClickAnimationTl.to(".mouseClickAnimation", {
+        rotate: -15,
+      });
+    });
+
+    animateHeroText();
+    animateHeroImage();
+    animateMouseClick();
   }, []);
 
   return (
@@ -106,10 +122,25 @@ const LandingPage = () => {
           />
         </Box>
       </Box>
-      <VStack h={"100%"} position={"relative"} bgColor={"red"} width={"100vw"}>
+      <VStack
+        h={"100%"}
+        position={"relative"}
+        width={"100%"}
+        py={2}
+        overflow={"hidden"}
+      >
         <Button width={"200px"} rightIcon={<RiGoogleFill />}>
           <Text mt={1.5}>Sign in with</Text>
         </Button>
+        <Box
+          className="mouseClickAnimation"
+          position={"absolute"}
+          top={"100px"}
+          right={"40%"}
+          opacity={0}
+        >
+          <RiCursorFill />
+        </Box>
       </VStack>
       <Box
         color={"white"}
