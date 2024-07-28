@@ -8,11 +8,10 @@ import {
   Link,
 } from "@chakra-ui/react";
 import { RiGoogleFill } from "@remixicon/react";
-import image1 from "../../assets/images/image1.png";
-import image2 from "../../assets/images/image2.png";
 import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import { icons } from "../../assets/assets";
 
 const LandingPage = () => {
   const [screenWidth, setScreenWidth] = useState(0);
@@ -112,7 +111,7 @@ const LandingPage = () => {
             height={"100%"}
             objectFit={"cover"}
             objectPosition={"center"}
-            src={screenWidth < "800px" ? image2 : image1}
+            src={screenWidth < "800px" ? icons.image2 : icons.image1}
           />
         </Box>
       </Box>

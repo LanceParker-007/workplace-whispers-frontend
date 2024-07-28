@@ -3,12 +3,12 @@ import {
   RiGoogleFill,
   RiInstagramFill,
 } from "@remixicon/react";
-import windIcon from "../../assets/images/windIcon.svg";
 import { Heading, HStack, Image, Box } from "@chakra-ui/react";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { icons } from "../../assets/assets";
 
 const Header = () => {
   const location = useLocation();
@@ -77,11 +77,11 @@ const Header = () => {
           fontWeight={900}
           fontStyle={"normal"}
         >
-          Workspace
+          Workplace
         </Heading>
         <Image
           className={"logoIcon"}
-          src={windIcon}
+          src={icons.windIconSVG}
           boxSize={"2rem"}
           borderRadius={"50%"}
           mt={0}
