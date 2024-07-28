@@ -6,6 +6,7 @@ import {
   Image,
   HStack,
   Link,
+  Text,
 } from "@chakra-ui/react";
 import { RiGoogleFill } from "@remixicon/react";
 import { useEffect, useRef, useState } from "react";
@@ -22,22 +23,13 @@ const LandingPage = () => {
   useEffect(() => {
     setScreenWidth(window.innerWidth);
 
-    const tl = gsap.timeline();
-
-    const animateheroLeftDiv = contextSafe(() => {
-      tl.from(".heroLeftDiv", {
-        x: "-150%",
-        delay: 1,
-      });
-    });
-
     const animateHeroText = contextSafe(() => {
-      tl.from(".heroTextWord", {
-        y: -500,
+      gsap.from(".heroTextWord", {
+        x: "100%",
         opacity: 0,
         stagger: 0.1,
         duration: 2.5,
-        ease: "bounce.out",
+        ease: "elastic.inOut",
       });
     });
 
@@ -45,12 +37,11 @@ const LandingPage = () => {
       gsap.from(".heroImage", {
         x: "500%",
         opacity: 0,
-        duration: 5,
-        ease: "elastic.in",
+        duration: 2,
+        ease: "bounce.in",
       });
     });
 
-    animateheroLeftDiv();
     animateHeroText();
     animateHeroImage();
   }, []);
@@ -60,28 +51,28 @@ const LandingPage = () => {
       <Box
         minH={"60vh"}
         width={"100%"}
-        paddingX={{ base: "0", lg: "15rem" }}
+        paddingX={{ base: "0", md: "10rem", xl: "15rem" }}
         display={"flex"}
         flexDirection={{ base: "column", md: "row" }}
         alignItems={"center"}
         justifyContent={"center"}
-        // bgColor={"white"}
       >
         <Box
           display={"flex"}
           justifyContent={{ sm: "center" }}
           alignItems={"center"}
           width={{ base: "90%", md: "100%" }}
-          px={{ base: 10 }}
+          px={{ md: 10 }}
           className="heroLeftDiv"
           bgColor={"#111"}
+          overflow={"hidden"}
         >
           <Heading
             ref={heroTextRef}
             width={"100%"}
             textAlign={{ base: "center", md: "left" }}
             fontFamily={`Jockey One`}
-            fontSize={"5xl"}
+            fontSize={{ base: "4xl", md: "5xl" }}
             color={"white"}
             className="heroText"
           >
@@ -115,12 +106,19 @@ const LandingPage = () => {
           />
         </Box>
       </Box>
-      <Box h={"100%"}>
-        <Button width={"200px"}>
-          <RiGoogleFill />
+      <VStack h={"100%"} position={"relative"} width={"100vw"}>
+        <Button width={"200px"} rightIcon={<RiGoogleFill />}>
+          <Text mt={1.5}>Sign in with</Text>
         </Button>
-      </Box>
-      <Box color={"white"} padding={"5"}>
+      </VStack>
+      <Box
+        color={"white"}
+        padding={"5"}
+        _selection={{
+          bgColor: "white",
+          color: "black",
+        }}
+      >
         <HStack>
           <Link textDecoration={"underline"}>Contact Us</Link>
           <Link textDecoration={"underline"}>Made by TheRevolutionries</Link>
