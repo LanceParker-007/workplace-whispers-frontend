@@ -54,7 +54,7 @@ const Header = () => {
       animateLogo();
     }
 
-    breakLogoText();
+    // breakLogoText();
   }, [contextSafe]);
 
   return (
@@ -84,7 +84,7 @@ const Header = () => {
           src={icons.windIconSVG}
           boxSize={"2rem"}
           borderRadius={"50%"}
-          mt={0}
+          mt={2}
           backgroundColor={"#111"}
         />
       </HStack>

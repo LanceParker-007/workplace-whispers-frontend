@@ -42,8 +42,8 @@ const LandingPage = () => {
       });
     });
 
-    animateHeroText();
-    animateHeroImage();
+    // animateHeroText();
+    // animateHeroImage();
   }, []);
 
   return (
@@ -106,7 +106,7 @@ const LandingPage = () => {
           />
         </Box>
       </Box>
-      <VStack h={"100%"} position={"relative"} width={"100vw"}>
+      <VStack h={"100%"} position={"relative"} bgColor={"red"} width={"100vw"}>
         <Button width={"200px"} rightIcon={<RiGoogleFill />}>
           <Text mt={1.5}>Sign in with</Text>
         </Button>
