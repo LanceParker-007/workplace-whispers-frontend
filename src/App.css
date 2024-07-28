@@ -1,0 +1,26 @@
+@import url("https://fonts.googleapis.com/css2?family=Jockey+One&family=Teko:wght@300..700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Teko";
+}
+
+.logoText {
+  color: white;
+}
+
+.logoTextChar {
+  color: white;
+}
+
+*::selection {
+  background-color: #111;
+  color: white;
+}
+
+.heroTextWord {
+  display: inline-block;
+  margin-right: 10px;
+}
