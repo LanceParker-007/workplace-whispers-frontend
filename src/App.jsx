@@ -6,6 +6,7 @@ import ProfilePage from "./pages/profilePage/ProfilePage";
 import AllPostsPage from "./pages/allPostsPage/AllPostsPage";
 import { Box, Center } from "@chakra-ui/react";
 import "./App.css";
+import PageNotFound from "./pages/pageNotFound/pageNotFound";
 
 const App = () => {
   return (
@@ -26,7 +27,7 @@ const App = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/posts" element={<AllPostsPage />} />
-            <Route path="/*" />
+            <Route path="/*" element={<PageNotFound />} />
           </Routes>
         </Box>
       </Box>
