@@ -52,7 +52,7 @@ const LandingPage = () => {
       mouseClickAnimationTl.to(".mouseClickAnimation", {
         top: "25",
         delay: 1,
-        right: { base: "40%", lg: "45%" },
+        right: { base: "30%", lg: "45%" },
         opacity: 1,
         duration: 1,
       });
@@ -142,7 +142,7 @@ const LandingPage = () => {
           className="mouseClickAnimation"
           position={"absolute"}
           top={"100px"}
-          right={{ base: "40%", lg: "45%" }}
+          right={{ base: "30%", lg: "45%" }}
           opacity={0}
           boxSize={5}
         >
