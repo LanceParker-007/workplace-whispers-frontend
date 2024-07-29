@@ -42,18 +42,24 @@ const LandingPage = () => {
       });
     });
 
-    const mouseClickAnimationTl = gsap.timeline({ repeat: -1, yoyo: true });
+    const mouseClickAnimationTl = gsap.timeline({
+      delay: 2,
+      repeat: -1,
+      yoyo: true,
+    });
 
     const animateMouseClick = contextSafe(() => {
       mouseClickAnimationTl.to(".mouseClickAnimation", {
         top: "25",
-        right: "40%",
+        delay: 1,
+        right: { base: "40%", lg: "45%" },
         opacity: 1,
         duration: 1,
       });
 
       mouseClickAnimationTl.to(".mouseClickAnimation", {
-        rotate: -15,
+        rotate: -10,
+        duration: 0.5,
       });
     });
 
@@ -136,10 +142,15 @@ const LandingPage = () => {
           className="mouseClickAnimation"
           position={"absolute"}
           top={"100px"}
-          right={"40%"}
+          right={{ base: "40%", lg: "45%" }}
           opacity={0}
+          boxSize={5}
         >
-          <RiCursorFill />
+          <Image
+            src={icons.macOsFingerPointer}
+            alt={"macOsFingerPointer"}
+            height={"100%"}
+          />
         </Box>
       </VStack>
       <Box
