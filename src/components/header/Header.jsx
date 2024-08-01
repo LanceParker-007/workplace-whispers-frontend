@@ -2,6 +2,8 @@ import {
   RiAccountCircleFill,
   RiGoogleFill,
   RiInstagramFill,
+  RiLogoutBoxFill,
+  RiLogoutCircleFill,
 } from "@remixicon/react";
 import { Heading, HStack, Image, Box } from "@chakra-ui/react";
 import gsap from "gsap";
@@ -9,13 +11,24 @@ import { useGSAP } from "@gsap/react";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { icons } from "../../assets/assets";
+import { useDispatch, useSelector } from "react-redux";
+import { setAccessToken } from "../../redux/slice/authSlice";
 
 const Header = () => {
+  const { accessToken } = useSelector((state) => state.authSliceReducer);
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const logoTextRef = useRef(null);
 
   const { contextSafe } = useGSAP();
+
+  const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+    dispatch(setAccessToken(""));
+    navigate("/");
+  };
 
   // TODO: Uncomment at last
   useGSAP(() => {
@@ -57,6 +70,17 @@ const Header = () => {
     breakLogoText();
   }, [contextSafe]);
 
+  useEffect(() => {
+    if (!accessToken) {
+      const localStorageToken = localStorage.getItem("accessToken");
+      if (!localStorageToken) {
+        navigate("/");
+      } else {
+        dispatch(setAccessToken(localStorageToken));
+      }
+    }
+  }, [accessToken]);
+
   return (
     <HStack
       bgColor={"#111"}
@@ -88,25 +112,41 @@ const Header = () => {
         />
       </HStack>
 
-      <Box
-        color={"white"}
-        cursor={"pointer"}
-        className="navIconHolder"
-        display={"block"}
-        _hover={{
-          borderRadius: "50%",
-          backgroundColor: "white",
-          color: " black",
-          transform: "scale(1.3)",
-          transition: "all 0.5s ease",
-        }}
-      >
-        {location.pathname.includes("/posts") ? (
-          <RiAccountCircleFill onClick={() => navigate("/profile")} />
-        ) : location.pathname.includes("/profile") ? (
-          <RiInstagramFill onClick={() => navigate("/posts")} />
-        ) : (
-          <RiGoogleFill />
+      <Box display={"flex"} gap={2} color="white" cursor={"pointer"}>
+        <Box
+          color={"white"}
+          cursor={"pointer"}
+          className="navIconHolder"
+          display={"block"}
+          _hover={{
+            borderRadius: "50%",
+            backgroundColor: "white",
+            color: " black",
+            transform: "scale(1.3)",
+            transition: "all 0.5s ease",
+          }}
+        >
+          {location.pathname.includes("/posts") ? (
+            <RiAccountCircleFill onClick={() => navigate("/profile")} />
+          ) : location.pathname.includes("/profile") ? (
+            <RiInstagramFill onClick={() => navigate("/posts")} />
+          ) : (
+            <></>
+          )}
+        </Box>
+        {accessToken && (
+          <Box
+            onClick={handleLogout}
+            _hover={{
+              borderRadius: "50%",
+              backgroundColor: "white",
+              color: " black",
+              transform: "scale(1.3)",
+              transition: "all 0.5s ease",
+            }}
+          >
+            <RiLogoutCircleFill />
+          </Box>
         )}
       </Box>
     </HStack>

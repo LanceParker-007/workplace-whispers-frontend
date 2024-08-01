@@ -7,18 +7,83 @@ import {
   HStack,
   Link,
   Text,
+  FormControl,
+  FormLabel,
+  Input,
+  Slider,
+  SliderTrack,
+  SliderFilledTrack,
+  SliderThumb,
+  SliderMark,
+  useToast,
 } from "@chakra-ui/react";
-import { RiCursorFill, RiCursorLine, RiGoogleFill } from "@remixicon/react";
 import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { icons } from "../../assets/assets";
+import axios from "axios";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
+import { useDispatch, useSelector } from "react-redux";
+import { setAccessToken, setUser } from "../../redux/slice/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
+  const { accessToken } = useSelector((state) => state.authSliceReducer);
   const [screenWidth, setScreenWidth] = useState(0);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const toast = useToast();
 
   const { contextSafe } = useGSAP();
   const heroTextRef = useRef();
+
+  const handleOnSuccessfulSignInWithGoogle = async (credentialResponse) => {
+    console.log("Credential Response:", credentialResponse);
+
+    // Decode the token to get user details
+    const token = credentialResponse.credential;
+    const user = jwtDecode(token);
+
+    try {
+      const { data } = await axios.post(
+        "http://localhost:5000/api/v1/auth/sign-in-with-google",
+        {
+          email: user.email,
+          username: user.name,
+          profilePic: user.picture,
+        }
+      );
+      if (data.success) {
+        toast({
+          title: "Account created.",
+          description: data.message,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+        dispatch(setUser(data.user));
+        dispatch(setAccessToken(data.token));
+        localStorage.setItem("user", user);
+        localStorage.setItem("accessToken", token);
+        navigate("/posts");
+      } else {
+        throw Error(data.message);
+      }
+    } catch (error) {
+      toast({
+        title: "Account creation failed.",
+        description: error.message,
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const handleError = () => {
+    console.log("Login Failed");
+  };
 
   useEffect(() => {
     setScreenWidth(window.innerWidth);
@@ -52,7 +117,7 @@ const LandingPage = () => {
       mouseClickAnimationTl.to(".mouseClickAnimation", {
         top: "25",
         delay: 1,
-        right: { base: "30%", sm: "40%", lg: "45%" },
+        right: { base: "30%", sm: "35%", md: "40%", lg: "45%" },
         opacity: 1,
         duration: 1,
       });
@@ -67,6 +132,12 @@ const LandingPage = () => {
     animateHeroImage();
     animateMouseClick();
   }, []);
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate("/posts");
+    }
+  }, [accessToken]);
 
   return (
     <VStack minH={"50vh"}>
@@ -92,7 +163,7 @@ const LandingPage = () => {
           <Heading
             ref={heroTextRef}
             width={"100%"}
-            textAlign={{ base: "center", md: "left" }}
+            textAlign={{ base: "center", lg: "left" }}
             fontFamily={`Jockey One`}
             fontSize={{ base: "4xl", md: "5xl" }}
             color={"white"}
@@ -135,14 +206,15 @@ const LandingPage = () => {
         py={2}
         overflow={"hidden"}
       >
-        <Button width={"200px"} rightIcon={<RiGoogleFill />}>
-          <Text mt={1.5}>Sign in with</Text>
-        </Button>
+        <GoogleLogin
+          onSuccess={handleOnSuccessfulSignInWithGoogle}
+          onError={handleError}
+        />
         <Box
           className="mouseClickAnimation"
           position={"absolute"}
           top={"100px"}
-          right={{ base: "30%", sm: "40%", lg: "45%" }}
+          right={{ base: "30%", sm: "35%", md: "40%", lg: "45%" }}
           opacity={0}
           boxSize={5}
         >
