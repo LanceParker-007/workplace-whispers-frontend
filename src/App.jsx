@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import React from "react";
+import "./App.css";
+import { Routes, Route } from "react-router-dom";
 import Header from "./components/header/Header";
 import LandingPage from "./pages/landingPage/LandingPage";
 import ProfilePage from "./pages/profilePage/ProfilePage";
 import AllPostsPage from "./pages/allPostsPage/AllPostsPage";
 import { Box, Center } from "@chakra-ui/react";
-import "./App.css";
 import PageNotFound from "./pages/pageNotFound/pageNotFound";
 import ProtectedRoutes from "./middleware/ProtectedRoutes";
 
