@@ -11,6 +11,7 @@ import {
   Card,
   Collapse,
   HStack,
+  Box,
 } from "@chakra-ui/react";
 import { useGSAP } from "@gsap/react";
 import {
@@ -18,6 +19,10 @@ import {
   RiArrowUpFill,
   RiEdit2Fill,
   RiEdit2Line,
+  RiThumbDownFill,
+  RiThumbDownLine,
+  RiThumbUpFill,
+  RiThumbUpLine,
 } from "@remixicon/react";
 import gsap from "gsap";
 import React, { useRef, useState } from "react";
@@ -134,22 +139,32 @@ const Post = ({ cardTitle, cardSubtitle, cardContent }) => {
         <HStack w={"100%"} justifyContent={"space-between"}>
           <ButtonGroup spacing="2">
             <Button
-              variant={votingState === "upvote" ? "solid" : "outline"}
+              variant={"solid"}
               colorScheme="green"
               onClick={() => handleVoting("upvote")}
             >
-              <RiArrowUpFill size={25} />
+              <Box mr={2}>
+                {votingState === "upvote" ? (
+                  <RiThumbUpFill size={20} />
+                ) : (
+                  <RiThumbUpLine size={20} />
+                )}
+              </Box>
               {numOfUpvotes}
-              {/* Number of upvotes */}
             </Button>
             <Button
               variant={votingState === "downvote" ? "solid" : "outline"}
-              colorScheme="orange"
+              colorScheme="red"
               onClick={() => handleVoting("downvote")}
             >
-              <RiArrowDownFill size={25} />
+              <Box mr={2}>
+                {votingState === "downvote" ? (
+                  <RiThumbDownFill size={20} />
+                ) : (
+                  <RiThumbDownLine size={20} />
+                )}
+              </Box>
               {numOfDownvotes}
-              {/* Number of downvotes */}
             </Button>
           </ButtonGroup>
 

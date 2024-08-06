@@ -60,7 +60,7 @@ const ProfilePage = () => {
             <FormLabel mb={-1}>Post Title</FormLabel>
             <Input
               type="text"
-              size={"sm"}
+              size={"md"}
               name="title"
               onChange={handlePostData}
             />
@@ -70,7 +70,7 @@ const ProfilePage = () => {
               <FormLabel mb={-1}>Company</FormLabel>
               <Input
                 type="text"
-                size={"sm"}
+                size={"md"}
                 name="companyName"
                 onChange={handlePostData}
               />
@@ -79,7 +79,7 @@ const ProfilePage = () => {
               <FormLabel mb={-1}>Location</FormLabel>
               <Input
                 type="text"
-                size={"sm"}
+                size={"md"}
                 name="location"
                 onChange={handlePostData}
               />
@@ -92,8 +92,8 @@ const ProfilePage = () => {
             <Textarea
               placeholder="Your story..."
               resize={"vertical"}
-              size={"sm"}
-              rows={20}
+              size={"md"}
+              rows={15}
               name="content"
               onChange={handlePostData}
             />
@@ -105,7 +105,7 @@ const ProfilePage = () => {
               colorScheme={"green"}
               rightIcon={<CheckIcon />}
               onClick={handleCreatePost}
-              isLoading={true}
+              isLoading={false}
             ></Button>
             <Button
               variant={"outline"}

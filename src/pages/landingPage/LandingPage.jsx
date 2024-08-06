@@ -1,20 +1,10 @@
 import {
   Box,
-  Button,
   Heading,
   VStack,
   Image,
   HStack,
   Link,
-  Text,
-  FormControl,
-  FormLabel,
-  Input,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  SliderMark,
   useToast,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
@@ -27,10 +17,11 @@ import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
 import { setAccessToken, setUser } from "../../redux/slice/authSlice";
 import { useNavigate } from "react-router-dom";
+import config from "../../config/config";
 
 const LandingPage = () => {
   const { accessToken } = useSelector((state) => state.authSliceReducer);
-  const [screenWidth, setScreenWidth] = useState(0);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const toast = useToast();
@@ -39,15 +30,13 @@ const LandingPage = () => {
   const heroTextRef = useRef();
 
   const handleOnSuccessfulSignInWithGoogle = async (credentialResponse) => {
-    console.log("Credential Response:", credentialResponse);
-
     // Decode the token to get user details
     const token = credentialResponse.credential;
     const user = jwtDecode(token);
 
     try {
       const { data } = await axios.post(
-        "http://localhost:5000/api/v1/auth/sign-in-with-google",
+        `${config.BACKEND_URL}/api/v1/auth/sign-in-with-google`,
         {
           email: user.email,
           username: user.name,
@@ -56,8 +45,7 @@ const LandingPage = () => {
       );
       if (data.success) {
         toast({
-          title: "Account created.",
-          description: data.message,
+          title: "Sign in successful",
           status: "success",
           duration: 5000,
           isClosable: true,
@@ -86,8 +74,6 @@ const LandingPage = () => {
   };
 
   useEffect(() => {
-    setScreenWidth(window.innerWidth);
-
     const animateHeroText = contextSafe(() => {
       gsap.from(".heroTextWord", {
         x: "100%",
@@ -98,14 +84,14 @@ const LandingPage = () => {
       });
     });
 
-    const animateHeroImage = contextSafe(() => {
-      gsap.from(".heroImage", {
-        x: "500%",
-        opacity: 0,
-        duration: 2,
-        ease: "bounce.in",
-      });
-    });
+    // const animateHeroImage = contextSafe(() => {
+    //   gsap.from(".heroImage", {
+    //     x: "500%",
+    //     opacity: 0,
+    //     duration: 2,
+    //     ease: "bounce.in",
+    //   });
+    // });
 
     const mouseClickAnimationTl = gsap.timeline({
       delay: 2,
@@ -129,7 +115,7 @@ const LandingPage = () => {
     });
 
     animateHeroText();
-    animateHeroImage();
+    // animateHeroImage();
     animateMouseClick();
   }, []);
 
@@ -190,13 +176,13 @@ const LandingPage = () => {
           alignItems={"center"}
           overflowX={"hidden"}
         >
-          <Image
+          {/* <Image
             className={"heroImage"}
             height={"100%"}
             objectFit={"cover"}
             objectPosition={"center"}
             src={screenWidth < "800px" ? icons.image2 : icons.image1}
-          />
+          /> */}
         </Box>
       </Box>
       <VStack
