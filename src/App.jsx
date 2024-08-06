@@ -10,6 +10,8 @@ import PageNotFound from "./pages/pageNotFound/pageNotFound";
 import ProtectedRoutes from "./middleware/ProtectedRoutes";
 
 const App = () => {
+  console.log(import.meta.env.NODE_ENV);
+
   return (
     <Center>
       <Box
