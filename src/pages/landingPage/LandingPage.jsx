@@ -54,7 +54,7 @@ const LandingPage = () => {
         });
         await dispatch(setUser(data.user));
         await dispatch(setAccessToken(data.token));
-        localStorage.setItem("user", user);
+        localStorage.setItem("user", JSON.stringify(user));
         localStorage.setItem("accessToken", data.token);
         navigate("/posts");
       } else {

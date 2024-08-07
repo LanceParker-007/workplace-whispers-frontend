@@ -11,11 +11,13 @@ import {
 } from "@chakra-ui/react";
 import { CheckIcon, SmallCloseIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
-import AllPostsPage from "../allPostsPage/AllPostsPage";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createNewPost } from "../../redux/action/postsAction";
+import DisplayPosts from "../../components/displayPosts/DisplayPosts";
 
 const ProfilePage = () => {
+  const { user } = useSelector((state) => state.authSliceReducer);
+  const { isLoading } = useSelector((state) => state.postsSliceReducer);
   const [postData, setPostData] = useState({
     title: "",
     companyName: "",
@@ -41,6 +43,7 @@ const ProfilePage = () => {
         content: postData.content,
       })
     );
+    setShowForm(false);
   };
 
   return (
@@ -115,7 +118,7 @@ const ProfilePage = () => {
               colorScheme={"green"}
               rightIcon={<CheckIcon />}
               onClick={handleCreatePost}
-              isLoading={false}
+              isLoading={isLoading}
             ></Button>
             <Button
               variant={"outline"}
@@ -126,7 +129,9 @@ const ProfilePage = () => {
           </HStack>
         </VStack>
       ) : (
-        <AllPostsPage />
+        <DisplayPosts
+          userId={user._id || JSON.parse(localStorage.getItem("user"))._id}
+        />
       )}
     </VStack>
   );

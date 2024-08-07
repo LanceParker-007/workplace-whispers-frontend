@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createNewPost } from "../action/postsAction";
+import {
+  createNewPost,
+  getAllPosts,
+  likeDislikePost,
+} from "../action/postsAction";
 
 const initialState = {
   allPosts: [],
@@ -17,6 +21,7 @@ const postsSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      // Handle create new post
       .addCase(createNewPost.pending, (state, action) => {
         state.isLoading = true;
       })
@@ -25,7 +30,17 @@ const postsSlice = createSlice({
       })
       .addCase(createNewPost.rejected, (state, action) => {
         state.isLoading = false;
-      });
+      })
+
+      // Handle like dislike of a post
+      .addCase(likeDislikePost.pending, (state, action) => {})
+      .addCase(likeDislikePost.fulfilled, (state, action) => {})
+      .addCase(likeDislikePost.rejected, (state, action) => {})
+
+      // Get all posts
+      .addCase(getAllPosts.pending, (state, action) => {})
+      .addCase(getAllPosts.fulfilled, (state, action) => {})
+      .addCase(getAllPosts.rejected, (state, action) => {});
   },
 });
 

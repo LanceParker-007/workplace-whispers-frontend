@@ -25,43 +25,50 @@ import {
   RiThumbUpLine,
 } from "@remixicon/react";
 import gsap from "gsap";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { EditIcon } from "@chakra-ui/icons";
+import { useDispatch } from "react-redux";
+import { likeDislikePost } from "../../redux/action/postsAction";
 
 const Post = ({ cardTitle, cardSubtitle, cardContent }) => {
   const [show, setShow] = useState(false);
   const handleToggle = () => setShow(!show);
 
-  // Handle voting: Either upvote or downvote or none
+  // Handle voting: Either Like or Dislike or none
   const [votingState, setVotingState] = useState("");
   const [numOfUpvotes, setNumOfUpvotes] = useState(55);
   const [numOfDownvotes, setNumOfDownvotes] = useState(5);
 
+  const dispatch = useDispatch();
+
   const handleVoting = (voteVal) => {
     if (votingState === voteVal) {
       setVotingState("");
-      if (voteVal === "upvote") setNumOfUpvotes(numOfUpvotes - 1);
-      else if (voteVal === "downvote") setNumOfDownvotes(numOfDownvotes - 1);
+      if (voteVal === "Like") setNumOfUpvotes(numOfUpvotes - 1);
+      else if (voteVal === "Dislike") setNumOfDownvotes(numOfDownvotes - 1);
     } else if (!votingState) {
-      if (voteVal === "upvote") {
+      if (voteVal === "Like") {
         setNumOfUpvotes(numOfUpvotes + 1);
-      } else if (voteVal === "downvote") {
+      } else if (voteVal === "Dislike") {
         setNumOfDownvotes(numOfDownvotes + 1);
       }
       setVotingState(voteVal);
     } else {
-      if (voteVal === "upvote") {
+      if (voteVal === "Like") {
         setNumOfUpvotes(numOfUpvotes + 1);
         setNumOfDownvotes(numOfDownvotes - 1);
-      } else if (voteVal === "downvote") {
+      } else if (voteVal === "Dislike") {
         setNumOfUpvotes(numOfUpvotes - 1);
         setNumOfDownvotes(numOfDownvotes + 1);
       }
       setVotingState(voteVal);
     }
-
-    // TODO: Handle API calling to save to this data
   };
+
+  useEffect(() => {
+    if (votingState)
+      dispatch(likeDislikePost({ postId: "", userAction: votingState }));
+  }, [dispatch, votingState]);
 
   return (
     <Card
@@ -141,10 +148,10 @@ const Post = ({ cardTitle, cardSubtitle, cardContent }) => {
             <Button
               variant={"solid"}
               colorScheme="green"
-              onClick={() => handleVoting("upvote")}
+              onClick={() => handleVoting("Like")}
             >
               <Box mr={2}>
-                {votingState === "upvote" ? (
+                {votingState === "Like" ? (
                   <RiThumbUpFill size={20} />
                 ) : (
                   <RiThumbUpLine size={20} />
@@ -153,12 +160,12 @@ const Post = ({ cardTitle, cardSubtitle, cardContent }) => {
               {numOfUpvotes}
             </Button>
             <Button
-              variant={votingState === "downvote" ? "solid" : "outline"}
+              variant={votingState === "Dislike" ? "solid" : "outline"}
               colorScheme="red"
-              onClick={() => handleVoting("downvote")}
+              onClick={() => handleVoting("Dislike")}
             >
               <Box mr={2}>
-                {votingState === "downvote" ? (
+                {votingState === "Dislike" ? (
                   <RiThumbDownFill size={20} />
                 ) : (
                   <RiThumbDownLine size={20} />
