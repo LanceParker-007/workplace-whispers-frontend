@@ -87,7 +87,7 @@ const Header = () => {
       justifyContent={"space-between"}
       p={5}
       className="headerContainer"
-      width={{ base: "100%", md: "60%" }}
+      width={{ base: "100%", lg: "60%" }}
       zIndex={10}
       position={"fixed"}
     >
@@ -113,6 +113,20 @@ const Header = () => {
       </HStack>
 
       <Box display={"flex"} gap={2} color="white" cursor={"pointer"}>
+        {accessToken && (
+          <Box
+            onClick={handleLogout}
+            _hover={{
+              borderRadius: "50%",
+              backgroundColor: "white",
+              color: " black",
+              transform: "scale(1.3)",
+              transition: "all 0.5s ease",
+            }}
+          >
+            <RiLogoutCircleFill />
+          </Box>
+        )}
         <Box
           color={"white"}
           cursor={"pointer"}
@@ -134,20 +148,6 @@ const Header = () => {
             <></>
           )}
         </Box>
-        {accessToken && (
-          <Box
-            onClick={handleLogout}
-            _hover={{
-              borderRadius: "50%",
-              backgroundColor: "white",
-              color: " black",
-              transform: "scale(1.3)",
-              transition: "all 0.5s ease",
-            }}
-          >
-            <RiLogoutCircleFill />
-          </Box>
-        )}
       </Box>
     </HStack>
   );

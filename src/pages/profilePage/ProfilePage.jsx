@@ -12,15 +12,18 @@ import {
 import { CheckIcon, SmallCloseIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
 import AllPostsPage from "../allPostsPage/AllPostsPage";
+import { useDispatch } from "react-redux";
+import { createNewPost } from "../../redux/action/postsAction";
 
 const ProfilePage = () => {
   const [postData, setPostData] = useState({
     title: "",
     companyName: "",
-    location: "",
+    companyLocation: "",
     content: "",
   });
   const [showForm, setShowForm] = useState(false);
+  const dispatch = useDispatch();
 
   const handlePostData = (e) => {
     setPostData((prev) => ({
@@ -30,7 +33,14 @@ const ProfilePage = () => {
   };
 
   const handleCreatePost = () => {
-    console.log(postData);
+    dispatch(
+      createNewPost({
+        title: postData.title,
+        companyName: postData.companyName,
+        companyLocation: postData.companyLocation,
+        content: postData.content,
+      })
+    );
   };
 
   return (
@@ -80,7 +90,7 @@ const ProfilePage = () => {
               <Input
                 type="text"
                 size={"md"}
-                name="location"
+                name="companyLocation"
                 onChange={handlePostData}
               />
             </FormControl>

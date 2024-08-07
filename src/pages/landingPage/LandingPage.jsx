@@ -43,6 +43,8 @@ const LandingPage = () => {
           profilePic: user.picture,
         }
       );
+      console.log(data.token);
+
       if (data.success) {
         toast({
           title: "Sign in successful",
@@ -50,10 +52,10 @@ const LandingPage = () => {
           duration: 5000,
           isClosable: true,
         });
-        dispatch(setUser(data.user));
-        dispatch(setAccessToken(data.token));
+        await dispatch(setUser(data.user));
+        await dispatch(setAccessToken(data.token));
         localStorage.setItem("user", user);
-        localStorage.setItem("accessToken", token);
+        localStorage.setItem("accessToken", data.token);
         navigate("/posts");
       } else {
         throw Error(data.message);
