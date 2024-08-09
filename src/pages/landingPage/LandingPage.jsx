@@ -15,12 +15,19 @@ import axios from "axios";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useDispatch, useSelector } from "react-redux";
-import { setAccessToken, setUser } from "../../redux/slice/authSlice";
+import {
+  setAccessToken,
+  setIsLoading,
+  setUser,
+} from "../../redux/slice/authSlice";
 import { useNavigate } from "react-router-dom";
 import config from "../../config/config";
+import FullScreenLoader from "../../components/loaders/FullScreenLoader";
 
 const LandingPage = () => {
-  const { accessToken } = useSelector((state) => state.authSliceReducer);
+  const { accessToken, isLoading } = useSelector(
+    (state) => state.authSliceReducer
+  );
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,6 +42,7 @@ const LandingPage = () => {
     const user = jwtDecode(token);
 
     try {
+      dispatch(setIsLoading(true));
       const { data } = await axios.post(
         `${config.BACKEND_URL}/api/v1/auth/sign-in-with-google`,
         {
@@ -68,6 +76,8 @@ const LandingPage = () => {
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      dispatch(setIsLoading(false));
     }
   };
 
@@ -85,15 +95,6 @@ const LandingPage = () => {
         ease: "elastic.inOut",
       });
     });
-
-    // const animateHeroImage = contextSafe(() => {
-    //   gsap.from(".heroImage", {
-    //     x: "500%",
-    //     opacity: 0,
-    //     duration: 2,
-    //     ease: "bounce.in",
-    //   });
-    // });
 
     const mouseClickAnimationTl = gsap.timeline({
       delay: 2,
@@ -116,19 +117,22 @@ const LandingPage = () => {
       });
     });
 
-    animateHeroText();
-    // animateHeroImage();
-    animateMouseClick();
-  }, []);
+    // animateHeroText();
+    // animateMouseClick();
+  }, [contextSafe]);
 
   useEffect(() => {
     if (accessToken) {
       navigate("/posts");
     }
-  }, [accessToken]);
+  }, [navigate, accessToken]);
+
+  console.log(isLoading);
+
+  if (isLoading) return <FullScreenLoader />;
 
   return (
-    <VStack minH={"50vh"}>
+    <VStack>
       <Box
         minH={"60vh"}
         width={"100%"}
@@ -151,11 +155,11 @@ const LandingPage = () => {
           <Heading
             ref={heroTextRef}
             width={"100%"}
-            textAlign={{ base: "center", lg: "left" }}
             fontFamily={`Jockey One`}
             fontSize={{ base: "4xl", md: "5xl" }}
             color={"white"}
             className="heroText"
+            textAlign={"center"}
           >
             <span className="heroTextWord">Share</span>
             <span className="heroTextWord">amazing</span>
@@ -170,21 +174,6 @@ const LandingPage = () => {
             <span className="heroTextWord">over</span>
             <span className="heroTextWord">here</span>
           </Heading>
-        </Box>
-        <Box
-          width={{ base: "90%", md: "0%" }}
-          display={"flex"}
-          justifyContent={{ base: "center", lg: "right" }}
-          alignItems={"center"}
-          overflowX={"hidden"}
-        >
-          {/* <Image
-            className={"heroImage"}
-            height={"100%"}
-            objectFit={"cover"}
-            objectPosition={"center"}
-            src={screenWidth < "800px" ? icons.image2 : icons.image1}
-          /> */}
         </Box>
       </Box>
       <VStack

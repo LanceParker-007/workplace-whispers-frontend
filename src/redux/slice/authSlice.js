@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   user: null,
   accessToken: null,
+  isLoading: false,
 };
 
 const authSlice = createSlice({
@@ -15,10 +16,13 @@ const authSlice = createSlice({
     setAccessToken(state, action) {
       state.accessToken = action.payload;
     },
+    setIsLoading(state, action) {
+      state.isLoading = action.payload;
+    },
   },
   extraReducers: (builder) => {},
 });
 
-export const { setUser, setAccessToken } = authSlice.actions;
+export const { setUser, setAccessToken, setIsLoading } = authSlice.actions;
 const authSliceReducer = authSlice.reducer;
 export default authSliceReducer;
