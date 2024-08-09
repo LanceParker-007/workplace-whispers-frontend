@@ -28,6 +28,7 @@ const LandingPage = () => {
   const { accessToken, isLoading } = useSelector(
     (state) => state.authSliceReducer
   );
+  console.log(import.meta.env.VITE_BACKEND_URL);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -117,8 +118,8 @@ const LandingPage = () => {
       });
     });
 
-    // animateHeroText();
-    // animateMouseClick();
+    animateHeroText();
+    animateMouseClick();
   }, [contextSafe]);
 
   useEffect(() => {
@@ -126,8 +127,6 @@ const LandingPage = () => {
       navigate("/posts");
     }
   }, [navigate, accessToken]);
-
-  console.log(isLoading);
 
   if (isLoading) return <FullScreenLoader />;
 
