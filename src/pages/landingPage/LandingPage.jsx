@@ -28,7 +28,6 @@ const LandingPage = () => {
   const { accessToken, isLoading } = useSelector(
     (state) => state.authSliceReducer
   );
-  console.log(import.meta.env.VITE_BACKEND_URL);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -52,17 +51,14 @@ const LandingPage = () => {
           profilePic: user.picture,
         }
       );
-      console.log(data.token);
 
       if (data.success) {
         toast({
-          title: "Sign in successful",
+          title: "Sign in successful!",
           status: "success",
-          duration: 5000,
-          isClosable: true,
         });
-        await dispatch(setUser(data.user));
-        await dispatch(setAccessToken(data.token));
+        dispatch(setUser(data.user));
+        dispatch(setAccessToken(data.token));
         localStorage.setItem("user", JSON.stringify(data.user));
         localStorage.setItem("accessToken", data.token);
         navigate("/posts");
@@ -71,11 +67,9 @@ const LandingPage = () => {
       }
     } catch (error) {
       toast({
-        title: "Account creation failed.",
+        title: "Sign in failed",
         description: error.message,
         status: "error",
-        duration: 5000,
-        isClosable: true,
       });
     } finally {
       dispatch(setIsLoading(false));

@@ -48,7 +48,11 @@ export const getAllPosts = createAsyncThunk(
         limit,
       });
 
-      console.log(data);
+      if (data.success) {
+        return data;
+      } else {
+        rejectWithValue(data.message);
+      }
     } catch (error) {
       rejectWithValue(error.message);
     }

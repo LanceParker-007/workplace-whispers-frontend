@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, current } from "@reduxjs/toolkit";
 import {
   createNewPost,
   getAllPosts,
@@ -6,7 +6,9 @@ import {
 } from "../action/postsAction";
 
 const initialState = {
-  allPosts: [],
+  posts: [],
+  totalPages: 0,
+  currentPage: 0,
   isLoading: "",
   message: "",
 };
@@ -15,8 +17,14 @@ const postsSlice = createSlice({
   name: "postsSlice",
   initialState: initialState,
   reducers: {
-    setAllPosts(state, action) {
-      state.allPosts = action.payload;
+    setPosts(state, action) {
+      state.posts = action.payload;
+    },
+    setTotalPages(state, action) {
+      state.totalPages = action.payload;
+    },
+    setCurrentPage(state, action) {
+      state.currentPage = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -38,12 +46,21 @@ const postsSlice = createSlice({
       .addCase(likeDislikePost.rejected, (state, action) => {})
 
       // Get all posts
-      .addCase(getAllPosts.pending, (state, action) => {})
-      .addCase(getAllPosts.fulfilled, (state, action) => {})
-      .addCase(getAllPosts.rejected, (state, action) => {});
+      .addCase(getAllPosts.pending, (state, action) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllPosts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.posts = action.payload?.posts;
+        state.totalPages = action.payload?.totalPages;
+        state.currentPage = action.payload?.currentPage;
+      })
+      .addCase(getAllPosts.rejected, (state, action) => {
+        state.isLoading = false;
+      });
   },
 });
 
-export const { setAllPosts } = postsSlice.actions;
+export const { setPosts, setTotalPages, setCurrentPage } = postsSlice.actions;
 const postsSliceReducer = postsSlice.reducer;
 export default postsSliceReducer;

@@ -130,7 +130,7 @@ const ProfilePage = () => {
         </VStack>
       ) : (
         <DisplayPosts
-          userId={user._id || JSON.parse(localStorage.getItem("user"))._id}
+          userId={user?._id || JSON.parse(localStorage.getItem("user"))._id}
         />
       )}
     </VStack>
