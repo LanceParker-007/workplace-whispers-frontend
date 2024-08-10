@@ -72,7 +72,8 @@ const Post = ({ cardTitle, cardSubtitle, cardContent }) => {
 
   return (
     <Card
-      w={{ sm: "xl" }}
+      maxw={"xl"}
+      minW={"sm"}
       border={"1px solid black"}
       _selection={{
         bgColor: "#111",
