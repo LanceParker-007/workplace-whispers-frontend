@@ -25,50 +25,68 @@ import {
   RiThumbUpLine,
 } from "@remixicon/react";
 import gsap from "gsap";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { EditIcon } from "@chakra-ui/icons";
 import { useDispatch } from "react-redux";
 import { likeDislikePost } from "../../redux/action/postsAction";
+import { debounce } from "lodash";
 
-const Post = ({ cardTitle, cardSubtitle, cardContent }) => {
+const Post = ({ postData }) => {
+  const {
+    _id: postId,
+    title: cardTitle,
+    companyName: companyName,
+    compnayLocation: companyLocation,
+    content: cardContent,
+    likes: likes,
+    dislikes: dislikes,
+  } = postData;
+
   const [show, setShow] = useState(false);
   const handleToggle = () => setShow(!show);
 
-  // Handle voting: Either Like or Dislike or none
+  // Handle Like Dislike: Either Like or Dislike or none
   const [votingState, setVotingState] = useState("");
-  const [numOfUpvotes, setNumOfUpvotes] = useState(55);
-  const [numOfDownvotes, setNumOfDownvotes] = useState(5);
+  const [numOfLikes, setNumOfLikes] = useState(likes?.length || 0);
+  const [numOfDislikes, setNumOfDislikes] = useState(dislikes?.length || 0);
 
   const dispatch = useDispatch();
 
-  const handleVoting = (voteVal) => {
+  const handleLikeDislikeState = (voteVal) => {
     if (votingState === voteVal) {
       setVotingState("");
-      if (voteVal === "Like") setNumOfUpvotes(numOfUpvotes - 1);
-      else if (voteVal === "Dislike") setNumOfDownvotes(numOfDownvotes - 1);
+      if (voteVal === "Like") setNumOfLikes(numOfLikes - 1);
+      else if (voteVal === "Dislike") setNumOfDislikes(numOfDislikes - 1);
     } else if (!votingState) {
       if (voteVal === "Like") {
-        setNumOfUpvotes(numOfUpvotes + 1);
+        setNumOfLikes(numOfLikes + 1);
       } else if (voteVal === "Dislike") {
-        setNumOfDownvotes(numOfDownvotes + 1);
+        setNumOfDislikes(numOfDislikes + 1);
       }
       setVotingState(voteVal);
     } else {
       if (voteVal === "Like") {
-        setNumOfUpvotes(numOfUpvotes + 1);
-        setNumOfDownvotes(numOfDownvotes - 1);
+        setNumOfLikes(numOfLikes + 1);
+        setNumOfDislikes(numOfDislikes - 1);
       } else if (voteVal === "Dislike") {
-        setNumOfUpvotes(numOfUpvotes - 1);
-        setNumOfDownvotes(numOfDownvotes + 1);
+        setNumOfLikes(numOfLikes - 1);
+        setNumOfDislikes(numOfDislikes + 1);
       }
       setVotingState(voteVal);
     }
   };
 
+  // Debounced function to dispatch the action
+  const handleLikeDislikePost = useCallback(
+    debounce((postId, userAction) => {
+      dispatch(likeDislikePost({ postId, userAction }));
+    }, 1000), // 10 seconds debounce
+    [dispatch]
+  );
+
   useEffect(() => {
-    if (votingState)
-      dispatch(likeDislikePost({ postId: "", userAction: votingState }));
-  }, [dispatch, votingState]);
+    if (votingState) handleLikeDislikePost(postId, votingState);
+  }, [votingState]);
 
   return (
     <Card
@@ -112,7 +130,7 @@ const Post = ({ cardTitle, cardSubtitle, cardContent }) => {
             }}
             letterSpacing={0.5}
           >
-            {cardSubtitle}
+            {`${companyName || ""} ${companyLocation || ""}`}
           </Heading>
           <Collapse startingHeight={50} in={show}>
             <Text
@@ -148,7 +166,7 @@ const Post = ({ cardTitle, cardSubtitle, cardContent }) => {
             <Button
               variant={"solid"}
               colorScheme="green"
-              onClick={() => handleVoting("Like")}
+              onClick={() => handleLikeDislikeState("Like")}
             >
               <Box mr={2}>
                 {votingState === "Like" ? (
@@ -157,12 +175,12 @@ const Post = ({ cardTitle, cardSubtitle, cardContent }) => {
                   <RiThumbUpLine size={20} />
                 )}
               </Box>
-              {numOfUpvotes}
+              {numOfLikes}
             </Button>
             <Button
               variant={votingState === "Dislike" ? "solid" : "outline"}
               colorScheme="red"
-              onClick={() => handleVoting("Dislike")}
+              onClick={() => handleLikeDislikeState("Dislike")}
             >
               <Box mr={2}>
                 {votingState === "Dislike" ? (
@@ -171,7 +189,7 @@ const Post = ({ cardTitle, cardSubtitle, cardContent }) => {
                   <RiThumbDownLine size={20} />
                 )}
               </Box>
-              {numOfDownvotes}
+              {numOfDislikes}
             </Button>
           </ButtonGroup>
 

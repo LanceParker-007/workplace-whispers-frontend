@@ -15,7 +15,11 @@ export const createNewPost = createAsyncThunk(
         content,
       });
 
-      console.log(data);
+      if (data.success) {
+        return data;
+      } else {
+        rejectWithValue(data);
+      }
     } catch (error) {
       rejectWithValue(error.message);
     }
@@ -31,7 +35,11 @@ export const likeDislikePost = createAsyncThunk(
         userAction,
       });
 
-      console.log(data);
+      if (data.success) {
+        return data;
+      } else {
+        rejectWithValue(data);
+      }
     } catch (error) {
       rejectWithValue(error.message);
     }

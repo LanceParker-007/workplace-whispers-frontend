@@ -77,7 +77,10 @@ const LandingPage = () => {
   };
 
   const handleError = () => {
-    console.log("Login Failed");
+    toast({
+      title: "Some error occured!",
+      isClosable: true,
+    });
   };
 
   useEffect(() => {

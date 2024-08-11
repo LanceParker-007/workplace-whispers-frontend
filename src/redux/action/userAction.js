@@ -3,7 +3,7 @@ import axiosInstance from "../../interceptor/axiosInstance";
 
 export const getAllPostsOfUser = createAsyncThunk(
   "getAllPostsOfUser",
-  async ({ userId, page = 1, limit = 10 }, { rejectWithValue }) => {
+  async ({ userId, page = 1, limit = 50 }, { rejectWithValue }) => {
     try {
       const { data } = await axiosInstance.post("/posts/get-all", {
         userId,

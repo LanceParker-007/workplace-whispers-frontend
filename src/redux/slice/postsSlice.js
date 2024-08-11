@@ -8,8 +8,8 @@ import {
 const initialState = {
   posts: [],
   totalPages: 0,
-  currentPage: 0,
-  isLoading: "",
+  currentPage: 1,
+  isLoading: false,
   message: "",
 };
 
@@ -42,7 +42,16 @@ const postsSlice = createSlice({
 
       // Handle like dislike of a post
       .addCase(likeDislikePost.pending, (state, action) => {})
-      .addCase(likeDislikePost.fulfilled, (state, action) => {})
+      .addCase(likeDislikePost.fulfilled, (state, action) => {
+        const updatedPost = action.payload.post;
+        const updatedPosts = state.posts.map((post) => {
+          if (post._id === updatedPost._id) {
+            post = updatedPost;
+          }
+          return post;
+        });
+        state.posts = updatedPosts;
+      })
       .addCase(likeDislikePost.rejected, (state, action) => {})
 
       // Get all posts
@@ -51,9 +60,9 @@ const postsSlice = createSlice({
       })
       .addCase(getAllPosts.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.posts = action.payload?.posts;
+        // eslint-disable-next-line no-unsafe-optional-chaining
+        state.posts = [...state.posts, ...action.payload?.posts];
         state.totalPages = action.payload?.totalPages;
-        state.currentPage = action.payload?.currentPage;
       })
       .addCase(getAllPosts.rejected, (state, action) => {
         state.isLoading = false;

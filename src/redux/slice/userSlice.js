@@ -11,7 +11,7 @@ const initialState = {
   //  Handling a users all posts
   posts: [],
   totalPages: 0,
-  currentPage: 0,
+  currentPage: 1,
 
   isLoading: false,
   message: "",
