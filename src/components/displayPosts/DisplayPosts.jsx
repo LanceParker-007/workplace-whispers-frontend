@@ -54,7 +54,7 @@ const DisplayPosts = ({ userId }) => {
     }
   }, [currentPage, totalPages]);
 
-  if (isLoading) return <FullScreenLoader />;
+  if (isLoading || !userId) return <FullScreenLoader />;
 
   return (
     <VStack mx={"auto"} padding={"5px"}>

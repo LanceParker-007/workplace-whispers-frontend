@@ -8,16 +8,21 @@ import {
   Textarea,
   VStack,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 import { CheckIcon, SmallCloseIcon } from "@chakra-ui/icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createNewPost } from "../../redux/action/postsAction";
+import { createNewPost } from "../../redux/action/userAction";
 import DisplayPosts from "../../components/displayPosts/DisplayPosts";
+import { setMessageEmpty } from "../../redux/slice/userSlice";
 
 const ProfilePage = () => {
   const { user } = useSelector((state) => state.authSliceReducer);
   const { isLoading } = useSelector((state) => state.postsSliceReducer);
+  const { message } = useSelector((state) => state.userSliceReducer);
+  const toast = useToast();
+
   const [postData, setPostData] = useState({
     title: "",
     companyName: "",
@@ -45,6 +50,16 @@ const ProfilePage = () => {
     );
     setShowForm(false);
   };
+
+  useEffect(() => {
+    if (message) {
+      toast({
+        description: message,
+        status: "info",
+      });
+      dispatch(setMessageEmpty(""));
+    }
+  }, [message]);
 
   return (
     <VStack>

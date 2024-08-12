@@ -12,6 +12,8 @@ import {
   Collapse,
   HStack,
   Box,
+  Skeleton,
+  IconButton,
 } from "@chakra-ui/react";
 import { useGSAP } from "@gsap/react";
 import {
@@ -24,14 +26,16 @@ import {
   RiThumbUpFill,
   RiThumbUpLine,
 } from "@remixicon/react";
-import gsap from "gsap";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { EditIcon } from "@chakra-ui/icons";
-import { useDispatch } from "react-redux";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { useDispatch, useSelector } from "react-redux";
 import { likeDislikePost } from "../../redux/action/postsAction";
 import { debounce } from "lodash";
+import FullScreenLoader from "../loaders/FullScreenLoader";
+import { deletePost } from "../../redux/action/userAction";
 
 const Post = ({ postData }) => {
+  const { user } = useSelector((state) => state.authSliceReducer);
   const {
     _id: postId,
     title: cardTitle,
@@ -40,6 +44,7 @@ const Post = ({ postData }) => {
     content: cardContent,
     likes: likes,
     dislikes: dislikes,
+    user: postCreatedBy,
   } = postData;
 
   const [show, setShow] = useState(false);
@@ -80,13 +85,17 @@ const Post = ({ postData }) => {
   const handleLikeDislikePost = useCallback(
     debounce((postId, userAction) => {
       dispatch(likeDislikePost({ postId, userAction }));
-    }, 1000), // 10 seconds debounce
+    }, 1000), // 1 second debounce
     [dispatch]
   );
 
   useEffect(() => {
     if (votingState) handleLikeDislikePost(postId, votingState);
   }, [votingState]);
+
+  const handleDeletePost = () => {
+    dispatch(deletePost({ postId }));
+  };
 
   return (
     <Card
@@ -193,10 +202,15 @@ const Post = ({ postData }) => {
             </Button>
           </ButtonGroup>
 
-          <Button variant="outline" colorScheme="green">
-            {" "}
-            <EditIcon />
-          </Button>
+          {user && postCreatedBy === user?._id && (
+            <IconButton
+              colorScheme="red"
+              onClick={handleDeletePost}
+              cursor={"pointer"}
+            >
+              <DeleteIcon />
+            </IconButton>
+          )}
         </HStack>
       </CardFooter>
     </Card>
