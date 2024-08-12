@@ -34,6 +34,13 @@ import { debounce } from "lodash";
 import FullScreenLoader from "../loaders/FullScreenLoader";
 import { deletePost } from "../../redux/action/userAction";
 
+const getInitialVotingState = (likesArr, dislikesArr, user) => {
+  if (likesArr?.includes(user?._id)) return "Like";
+  if (dislikesArr?.includes(user?._id)) return "Dislike";
+
+  return "";
+};
+
 const Post = ({ postData }) => {
   const { user } = useSelector((state) => state.authSliceReducer);
   const {
@@ -51,7 +58,7 @@ const Post = ({ postData }) => {
   const handleToggle = () => setShow(!show);
 
   // Handle Like Dislike: Either Like or Dislike or none
-  const [votingState, setVotingState] = useState("");
+  const [votingState, setVotingState] = useState(undefined);
   const [numOfLikes, setNumOfLikes] = useState(likes?.length || 0);
   const [numOfDislikes, setNumOfDislikes] = useState(dislikes?.length || 0);
 
@@ -90,7 +97,17 @@ const Post = ({ postData }) => {
   );
 
   useEffect(() => {
-    if (votingState) handleLikeDislikePost(postId, votingState);
+    if (user) {
+      setVotingState(getInitialVotingState(likes, dislikes, user));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (user && votingState !== null && votingState !== undefined) {
+      if (getInitialVotingState(likes, dislikes, user) !== votingState) {
+        handleLikeDislikePost(postId, votingState);
+      }
+    }
   }, [votingState]);
 
   const handleDeletePost = () => {

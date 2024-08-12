@@ -40,6 +40,12 @@ const ProfilePage = () => {
   };
 
   const handleCreatePost = () => {
+    if (!postData.title || !postData.content) {
+      return toast({
+        title: "Fill title and content!",
+        status: "warning",
+      });
+    }
     dispatch(
       createNewPost({
         title: postData.title,
