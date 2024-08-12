@@ -169,6 +169,7 @@ const Post = ({ postData }) => {
                 bgColor: "#111",
                 color: "white",
               }}
+              whiteSpace={"pre-wrap"}
             >
               {cardContent}
             </Text>

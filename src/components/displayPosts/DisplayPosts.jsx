@@ -3,11 +3,11 @@ import Post from "../post/Post";
 import { useDispatch, useSelector } from "react-redux";
 import { HStack, VStack } from "@chakra-ui/react";
 import { getAllPostsOfUser } from "../../redux/action/userAction";
-import { setCurrentPage } from "../../redux/slice/userSlice";
+import { setCurrentPage, setMessageEmpty } from "../../redux/slice/userSlice";
 import FullScreenLoader from "../loaders/FullScreenLoader";
 
 const DisplayPosts = ({ userId }) => {
-  const { posts, totalPages, currentPage, isLoading } = useSelector(
+  const { posts, totalPages, currentPage, isLoading, message } = useSelector(
     (state) => state.userSliceReducer
   );
 
@@ -53,6 +53,14 @@ const DisplayPosts = ({ userId }) => {
       if (target) target.style.display = "none"; // Hide the trigger when no more pages
     }
   }, [currentPage, totalPages]);
+
+  useEffect(() => {
+    if (message) {
+      dispatch(getAllPostsOfUser({ userId, page: 1 }));
+      dispatch(setCurrentPage(1));
+      dispatch(setMessageEmpty());
+    }
+  }, [message]);
 
   if (isLoading || !userId) return <FullScreenLoader />;
 

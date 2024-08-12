@@ -61,7 +61,9 @@ const ProfilePage = () => {
     if (message) {
       toast({
         description: message,
-        status: "info",
+        status: "loading",
+        duration: 1000,
+        isClosable: true,
       });
       dispatch(setMessageEmpty(""));
     }

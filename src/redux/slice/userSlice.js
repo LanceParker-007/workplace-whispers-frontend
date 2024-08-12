@@ -53,11 +53,15 @@ const userSlice = createSlice({
       })
       .addCase(createNewPost.fulfilled, (state, action) => {
         state.isLoading = false;
-        const newPost = action.payload.createdPost;
-        state.posts.unshift(newPost);
+        // const createdPost = action.payload.createdPost;
+        // if (createdPost) {
+        //   state.posts = [createdPost, ...state.posts];
+        // }
+        state.message = action.payload?.message || "Post created successfully";
       })
       .addCase(createNewPost.rejected, (state, action) => {
         state.isLoading = false;
+        state.message = action.payload?.message || "Failed creating post!";
       })
 
       // Get all posts of user
@@ -68,7 +72,6 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.posts = action.payload?.posts;
         state.totalPages = action.payload?.totalPages;
-        state.currentPage = action.payload?.currentPage;
       })
       .addCase(getAllPostsOfUser.rejected, (state, action) => {
         state.isLoading = false;
