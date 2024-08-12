@@ -83,10 +83,10 @@ const userSlice = createSlice({
       })
       .addCase(deletePost.fulfilled, (state, action) => {
         state.isLoading = false;
-        const deletedPost = action.payload.deletedPost;
-        state.posts = state.posts.filter(
-          (post) => post._id !== deletedPost._id
-        );
+        // const deletedPost = action.payload.deletedPost;
+        // state.posts = state.posts.filter(
+        //   (post) => post._id !== deletedPost._id
+        // );
         state.message = action.payload.message;
       })
       .addCase(deletePost.rejected, (state, action) => {
