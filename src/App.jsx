@@ -11,19 +11,17 @@ import ProtectedRoutes from "./middleware/ProtectedRoutes";
 
 const App = () => {
   return (
-    <Center>
-      <Box
+    <>
+      <Header />
+      <Center
         w={{ base: "100%" }}
-        minHeight={"100vh"}
-        borderRight={"1px solid black"}
-        borderLeft={"1px solid black"}
+        minHeight={"90vh"}
         bgColor={"#111"}
         display={"flex"}
         flexDirection={"column"}
         alignItems={"center"}
       >
-        <Header />
-        <Box mt={"85px"} width={"100%"}>
+        <Box width={"100%"}>
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route
@@ -45,8 +43,8 @@ const App = () => {
             <Route path="/*" element={<PageNotFound />} />
           </Routes>
         </Box>
-      </Box>
-    </Center>
+      </Center>
+    </>
   );
 };
 

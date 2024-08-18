@@ -18,7 +18,7 @@ const DisplayPosts = ({ userId }) => {
       dispatch(getAllPostsOfUser({ userId, page: currentPage }));
       dispatch(setCurrentPage(currentPage + 1));
     }
-  }, [userId]);
+  }, []);
 
   const fetchMorePosts = () => {
     if (!isLoading && currentPage <= totalPages) {

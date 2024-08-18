@@ -158,17 +158,22 @@ const LandingPage = () => {
             textAlign={"center"}
           >
             <span className="heroTextWord">Share</span>
-            <span className="heroTextWord">amazing</span>
+            <span className="heroTextWord">amazing </span>
             <span className="heroTextWord">secrets</span>
-            <span className="heroTextWord">funny</span>
+            <span className="heroTextWord">,</span>
+            <span className="heroTextWord">&nbsp; funny</span>
             <span className="heroTextWord">stories</span>
-            <span className="heroTextWord">confessions</span>
+            <span className="heroTextWord">,</span>
+            <span className="heroTextWord">&nbsp; confessions</span>
+            <span className="heroTextWord">,</span>
+            <span className="heroTextWord">&nbsp; and</span>
+            <span className="heroTextWord">reviews</span>
             <span className="heroTextWord">from</span>
             <span className="heroTextWord">your</span>
             <span className="heroTextWord">work</span>
             <span className="heroTextWord">place</span>
             <span className="heroTextWord">over</span>
-            <span className="heroTextWord">here</span>
+            <span className="heroTextWord">here!</span>
           </Heading>
         </Box>
       </Box>

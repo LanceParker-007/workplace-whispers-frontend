@@ -84,38 +84,56 @@ const Header = () => {
   return (
     <HStack
       bgColor={"#111"}
-      justifyContent={"space-between"}
-      p={5}
       className="headerContainer"
-      width={{ base: "100%", lg: "60%" }}
-      zIndex={10}
-      position={"fixed"}
+      width={"100%"}
+      py={4}
+      px={5}
     >
-      <HStack justifyContent={"center"} gap={"0px"} alignItems={"center"}>
-        <Heading
-          ref={logoTextRef}
-          className="logoText"
-          display={"flex"}
-          color={"white"}
-          fontFamily={`"Jockey One", sans-serif`}
-          fontWeight={900}
-          fontStyle={"normal"}
-        >
-          Workplace
-        </Heading>
-        <Image
-          className={"logoIcon"}
-          src={icons.windIconSVG}
-          boxSize={"2rem"}
-          borderRadius={"50%"}
-          backgroundColor={"#111"}
-        />
-      </HStack>
-
-      <Box display={"flex"} gap={2} color="white" cursor={"pointer"}>
-        {accessToken && (
+      <HStack
+        width={{ base: "100%", lg: "70%" }}
+        mx={"auto"}
+        justifyContent={"space-between"}
+      >
+        <HStack gap={"0px"}>
+          <Heading
+            ref={logoTextRef}
+            className="logoText"
+            display={"flex"}
+            color={"white"}
+            fontFamily={`"Jockey One", sans-serif`}
+            fontWeight={900}
+            fontStyle={"normal"}
+          >
+            Workplace
+          </Heading>
+          <Image
+            className={"logoIcon"}
+            src={icons.windIconSVG}
+            boxSize={"2rem"}
+            borderRadius={"50%"}
+            backgroundColor={"#111"}
+          />
+        </HStack>
+        <Box display={"flex"} gap={2} color="white" cursor={"pointer"}>
+          {accessToken && (
+            <Box
+              onClick={handleLogout}
+              _hover={{
+                borderRadius: "50%",
+                backgroundColor: "white",
+                color: " black",
+                transform: "scale(1.3)",
+                transition: "all 0.5s ease",
+              }}
+            >
+              <RiLogoutCircleFill />
+            </Box>
+          )}
           <Box
-            onClick={handleLogout}
+            color={"white"}
+            cursor={"pointer"}
+            className="navIconHolder"
+            display={"block"}
             _hover={{
               borderRadius: "50%",
               backgroundColor: "white",
@@ -124,31 +142,16 @@ const Header = () => {
               transition: "all 0.5s ease",
             }}
           >
-            <RiLogoutCircleFill />
+            {location.pathname.includes("/posts") ? (
+              <RiAccountCircleFill onClick={() => navigate("/profile")} />
+            ) : location.pathname.includes("/profile") ? (
+              <RiInstagramFill onClick={() => navigate("/posts")} />
+            ) : (
+              <></>
+            )}
           </Box>
-        )}
-        <Box
-          color={"white"}
-          cursor={"pointer"}
-          className="navIconHolder"
-          display={"block"}
-          _hover={{
-            borderRadius: "50%",
-            backgroundColor: "white",
-            color: " black",
-            transform: "scale(1.3)",
-            transition: "all 0.5s ease",
-          }}
-        >
-          {location.pathname.includes("/posts") ? (
-            <RiAccountCircleFill onClick={() => navigate("/profile")} />
-          ) : location.pathname.includes("/profile") ? (
-            <RiInstagramFill onClick={() => navigate("/posts")} />
-          ) : (
-            <></>
-          )}
         </Box>
-      </Box>
+      </HStack>
     </HStack>
   );
 };
