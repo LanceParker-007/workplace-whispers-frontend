@@ -6,6 +6,7 @@ import {
   HStack,
   Link,
   useToast,
+  Text,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
@@ -129,6 +130,7 @@ const LandingPage = () => {
 
   return (
     <VStack>
+      {/* Hero Section */}
       <Box
         minH={"60vh"}
         width={"100%"}
@@ -158,25 +160,43 @@ const LandingPage = () => {
             textAlign={"center"}
           >
             <span className="heroTextWord">Share</span>
-            <span className="heroTextWord">amazing </span>
+            <span
+              className="heroTextWord"
+              style={{ textDecoration: "underline yellow" }}
+            >
+              amazing{" "}
+            </span>
             <span className="heroTextWord">secrets</span>
-            <span className="heroTextWord">,</span>
-            <span className="heroTextWord">&nbsp; funny</span>
+            <span
+              className="heroTextWord"
+              style={{ textDecoration: "underline yellow" }}
+            >
+              funny
+            </span>
             <span className="heroTextWord">stories</span>
-            <span className="heroTextWord">,</span>
-            <span className="heroTextWord">&nbsp; confessions</span>
-            <span className="heroTextWord">,</span>
-            <span className="heroTextWord">&nbsp; and</span>
-            <span className="heroTextWord">reviews</span>
+            <span
+              className="heroTextWord"
+              style={{ textDecoration: "underline yellow" }}
+            >
+              confessions
+            </span>
+            <span className="heroTextWord">and</span>
+            <span
+              className="heroTextWord"
+              style={{ textDecoration: "underline yellow" }}
+            >
+              reviews
+            </span>
             <span className="heroTextWord">from</span>
             <span className="heroTextWord">your</span>
-            <span className="heroTextWord">work</span>
-            <span className="heroTextWord">place</span>
+            <span className="heroTextWord">workplace</span>
             <span className="heroTextWord">over</span>
             <span className="heroTextWord">here!</span>
           </Heading>
         </Box>
       </Box>
+
+      {/* Sign in box */}
       <VStack
         h={"100%"}
         position={"relative"}
@@ -184,6 +204,7 @@ const LandingPage = () => {
         py={2}
         overflow={"hidden"}
       >
+        <Text color={"white"}>Join The Conversation Now</Text>
         <GoogleLogin
           onSuccess={handleOnSuccessfulSignInWithGoogle}
           onError={handleError}
@@ -203,6 +224,8 @@ const LandingPage = () => {
           />
         </Box>
       </VStack>
+
+      {/* Footer */}
       <Box
         color={"white"}
         padding={"5"}
@@ -210,10 +233,12 @@ const LandingPage = () => {
           bgColor: "white",
           color: "black",
         }}
+        position={"absolute"}
+        bottom={0}
       >
         <HStack>
           <Link textDecoration={"underline"}>Contact Us</Link>
-          <Link textDecoration={"underline"}>Made by TheRevolutionries</Link>
+          {/* <Link textDecoration={"underline"}>Made by TheRevolutionries</Link> */}
         </HStack>
       </Box>
     </VStack>
