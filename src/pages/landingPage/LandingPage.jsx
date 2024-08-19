@@ -7,6 +7,12 @@ import {
   Link,
   useToast,
   Text,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionIcon,
+  AccordionPanel,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useEffect, useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
@@ -24,6 +30,10 @@ import {
 import { useNavigate } from "react-router-dom";
 import config from "../../config/config";
 import FullScreenLoader from "../../components/loaders/FullScreenLoader";
+import communityGuidlines from "../../assets/constants/communityGuidelnes";
+import faqs from "../../assets/constants/faqs";
+import LandingPageModal from "../../components/modals/LandingPageModal";
+import termsOfService from "../../assets/constants/termOfService";
 
 const LandingPage = () => {
   const { accessToken, isLoading } = useSelector(
@@ -34,6 +44,19 @@ const LandingPage = () => {
   const navigate = useNavigate();
   const toast = useToast();
 
+  // modals
+  const {
+    isOpen: isOpenTOS,
+    onOpen: onOpenTOS,
+    onClose: onCloseTOS,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenCG,
+    onOpen: onOpenCG,
+    onClose: onCloseCG,
+  } = useDisclosure();
+
+  // GSAP
   const { contextSafe } = useGSAP();
   const heroTextRef = useRef();
 
@@ -103,9 +126,9 @@ const LandingPage = () => {
 
     const animateMouseClick = contextSafe(() => {
       mouseClickAnimationTl.to(".mouseClickAnimation", {
-        top: "25",
+        top: "60",
         delay: 1,
-        right: { base: "30%", sm: "35%", md: "40%", lg: "45%" },
+        right: { base: "35%", sm: "35%", md: "40%", lg: "45%" },
         opacity: 1,
         duration: 1,
       });
@@ -116,8 +139,8 @@ const LandingPage = () => {
       });
     });
 
-    animateHeroText();
-    animateMouseClick();
+    // animateHeroText();
+    // animateMouseClick();
   }, [contextSafe]);
 
   useEffect(() => {
@@ -131,99 +154,141 @@ const LandingPage = () => {
   return (
     <VStack>
       {/* Hero Section */}
-      <Box
-        minH={"60vh"}
-        width={"100%"}
-        paddingX={{ base: "0", md: "10rem", xl: "15rem" }}
-        display={"flex"}
-        flexDirection={{ base: "column", md: "row" }}
-        alignItems={"center"}
-        justifyContent={"center"}
-      >
+      <Box minHeight={"100vh"}>
+        {/* Hero Content */}
         <Box
+          minH={"60vh"}
+          width={"100%"}
+          paddingX={{ base: "0", md: "5rem", xl: "15rem" }}
           display={"flex"}
-          justifyContent={{ sm: "center" }}
+          flexDirection={{ base: "column", md: "row" }}
           alignItems={"center"}
-          width={{ base: "90%", md: "100%" }}
-          px={{ md: 10 }}
-          className="heroLeftDiv"
-          bgColor={"#111"}
+          justifyContent={"center"}
+        >
+          <Box
+            display={"flex"}
+            justifyContent={{ sm: "center" }}
+            alignItems={"center"}
+            width={{ base: "90%", md: "100%" }}
+            className="heroLeftDiv"
+            bgColor={"#111"}
+            overflow={"hidden"}
+          >
+            <Heading
+              ref={heroTextRef}
+              width={"100%"}
+              fontFamily={`Jockey One`}
+              fontSize={{ base: "4xl", md: "5xl" }}
+              color={"white"}
+              className="heroText"
+              textAlign={"center"}
+            >
+              <span className="heroTextWord">Share</span>
+              <span
+                className="heroTextWord"
+                style={{ textDecoration: "underline yellow" }}
+              >
+                amazing{" "}
+              </span>
+              <span className="heroTextWord">secrets</span>
+              <span
+                className="heroTextWord"
+                style={{ textDecoration: "underline yellow" }}
+              >
+                funny
+              </span>
+              <span className="heroTextWord">stories</span>
+              <span
+                className="heroTextWord"
+                style={{ textDecoration: "underline yellow" }}
+              >
+                confessions
+              </span>
+              <span className="heroTextWord">and</span>
+              <span
+                className="heroTextWord"
+                style={{ textDecoration: "underline yellow" }}
+              >
+                reviews
+              </span>
+              <span className="heroTextWord">from</span>
+              <span className="heroTextWord">your</span>
+              <span className="heroTextWord">workplace</span>
+              <span className="heroTextWord">over</span>
+              <span className="heroTextWord">here!</span>
+            </Heading>
+          </Box>
+        </Box>
+
+        {/* Sign in box */}
+        <VStack
+          h={"100%"}
+          position={"relative"}
+          width={"100%"}
+          py={2}
           overflow={"hidden"}
         >
-          <Heading
-            ref={heroTextRef}
-            width={"100%"}
-            fontFamily={`Jockey One`}
-            fontSize={{ base: "4xl", md: "5xl" }}
-            color={"white"}
-            className="heroText"
-            textAlign={"center"}
+          <Text color={"white"}>Join The Conversation Now</Text>
+          <GoogleLogin
+            onSuccess={handleOnSuccessfulSignInWithGoogle}
+            onError={handleError}
+          />
+          <Box
+            className="mouseClickAnimation"
+            position={"absolute"}
+            top={"100px"}
+            right={{ base: "35%", sm: "35%", md: "40%", lg: "45%" }}
+            opacity={0}
+            boxSize={5}
           >
-            <span className="heroTextWord">Share</span>
-            <span
-              className="heroTextWord"
-              style={{ textDecoration: "underline yellow" }}
-            >
-              amazing{" "}
-            </span>
-            <span className="heroTextWord">secrets</span>
-            <span
-              className="heroTextWord"
-              style={{ textDecoration: "underline yellow" }}
-            >
-              funny
-            </span>
-            <span className="heroTextWord">stories</span>
-            <span
-              className="heroTextWord"
-              style={{ textDecoration: "underline yellow" }}
-            >
-              confessions
-            </span>
-            <span className="heroTextWord">and</span>
-            <span
-              className="heroTextWord"
-              style={{ textDecoration: "underline yellow" }}
-            >
-              reviews
-            </span>
-            <span className="heroTextWord">from</span>
-            <span className="heroTextWord">your</span>
-            <span className="heroTextWord">workplace</span>
-            <span className="heroTextWord">over</span>
-            <span className="heroTextWord">here!</span>
-          </Heading>
-        </Box>
+            <Image
+              src={icons.macOsFingerPointer}
+              alt={"macOsFingerPointer"}
+              height={"100%"}
+            />
+          </Box>
+        </VStack>
       </Box>
 
-      {/* Sign in box */}
-      <VStack
-        h={"100%"}
-        position={"relative"}
-        width={"100%"}
-        py={2}
-        overflow={"hidden"}
-      >
-        <Text color={"white"}>Join The Conversation Now</Text>
-        <GoogleLogin
-          onSuccess={handleOnSuccessfulSignInWithGoogle}
-          onError={handleError}
-        />
-        <Box
-          className="mouseClickAnimation"
-          position={"absolute"}
-          top={"100px"}
-          right={{ base: "30%", sm: "35%", md: "40%", lg: "45%" }}
-          opacity={0}
-          boxSize={5}
+      {/* Features and How it works! */}
+
+      {/* Community Guidelines and FAQs*/}
+      <Box width={"100%"} display={"flex"} justifyContent={"center"} px={5}>
+        {/* FAQs */}
+        <VStack
+          bgColor={"#111"}
+          width={{ base: "100%", lg: "60%" }}
+          border={"1px solid white"}
+          p={5}
+          borderRadius={6}
+          color={"white"}
         >
-          <Image
-            src={icons.macOsFingerPointer}
-            alt={"macOsFingerPointer"}
-            height={"100%"}
-          />
-        </Box>
-      </VStack>
+          <Heading fontFamily={"Jockey One"}>FAQs</Heading>
+          <Accordion allowToggle width={"100%"}>
+            {faqs.map((faq, idx) => (
+              <AccordionItem key={idx}>
+                <h2>
+                  <AccordionButton>
+                    <Box
+                      as="span"
+                      flex="10"
+                      textAlign="left"
+                      fontFamily={"Jockey One"}
+                      fontSize={"2xl"}
+                    >
+                      {faq.question}
+                    </Box>
+                    <AccordionIcon />
+                  </AccordionButton>
+                </h2>
+                <AccordionPanel pb={4} fontSize={"xl"}>
+                  {faq.answer}
+                </AccordionPanel>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </VStack>
+      </Box>
 
       {/* Footer */}
       <Box
@@ -233,12 +298,37 @@ const LandingPage = () => {
           bgColor: "white",
           color: "black",
         }}
-        position={"absolute"}
-        bottom={0}
+        display={"flex"}
+        flexDirection={"column"}
+        gap={10}
       >
-        <HStack>
+        <HStack justifyContent={"center"}>
           <Link textDecoration={"underline"}>Contact Us</Link>
-          {/* <Link textDecoration={"underline"}>Made by TheRevolutionries</Link> */}
+          <Link textDecoration={"underline"} onClick={onOpenTOS}>
+            Terms Of Service
+          </Link>
+          <Link textDecoration={"underline"} onClick={onOpenCG}>
+            Community Guidelines
+          </Link>
+        </HStack>
+
+        {/* TOS Modal */}
+        <LandingPageModal
+          modalTitle={"Terms Of Service"}
+          modalContent={termsOfService}
+          isOpen={isOpenTOS}
+          onClose={onCloseTOS}
+        />
+        {/* CG Modal */}
+        <LandingPageModal
+          modalTitle={"Community Guidelines"}
+          modalContent={communityGuidlines}
+          isOpen={isOpenCG}
+          onClose={onCloseCG}
+        />
+
+        <HStack justifyContent={"center"}>
+          <Text>© 2024 Workplace Whispers. All rights reserved.</Text>
         </HStack>
       </Box>
     </VStack>

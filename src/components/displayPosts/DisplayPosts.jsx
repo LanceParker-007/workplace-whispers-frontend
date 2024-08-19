@@ -16,7 +16,7 @@ const DisplayPosts = ({ userId }) => {
   useEffect(() => {
     if (userId) {
       dispatch(getAllPostsOfUser({ userId, page: currentPage }));
-      dispatch(setCurrentPage(currentPage + 1));
+      // dispatch(setCurrentPage(currentPage + 1));
     }
   }, []);
 
@@ -32,7 +32,7 @@ const DisplayPosts = ({ userId }) => {
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          fetchMorePosts();
+          // fetchMorePosts();
         }
       },
       { threshold: 0.1 }
@@ -58,7 +58,7 @@ const DisplayPosts = ({ userId }) => {
     if (message) {
       dispatch(getAllPostsOfUser({ userId, page: 1 }));
       dispatch(setCurrentPage(1));
-      dispatch(setMessageEmpty());
+      dispatch(setMessageEmpty(""));
     }
   }, [message]);
 
