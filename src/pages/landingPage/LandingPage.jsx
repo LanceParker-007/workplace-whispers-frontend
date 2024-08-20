@@ -139,8 +139,8 @@ const LandingPage = () => {
       });
     });
 
-    // animateHeroText();
-    // animateMouseClick();
+    animateHeroText();
+    animateMouseClick();
   }, [contextSafe]);
 
   useEffect(() => {
